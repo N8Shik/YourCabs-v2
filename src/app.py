@@ -1,4 +1,4 @@
-"""
+﻿"""
 YourCabs Cancellation Prediction - Main Streamlit Application
 Advanced ML-powered cancellation prediction system with professional UI/UX
 """
@@ -490,7 +490,7 @@ with st.sidebar:
                     st.metric("Recall", "87.1%", delta="Comprehensive")
                 
                 st.markdown("---")
-                st.markdown("**� Model Architecture**")
+                st.markdown("**🧠 Model Architecture**")
                 st.write("🚀 **Algorithm:** XGBoost Ensemble")
                 st.write("🔧 **Features:** 20+ engineered features")
                 st.write("📊 **Training:** 50,000+ samples")
@@ -605,7 +605,7 @@ elif app_mode == "🔮 Predict":
             st.markdown("---")
             
             # Service section
-            st.write("**� Service Details**")
+            st.write("**🚛 Service Details**")
             col_service1, col_service2 = st.columns(2)
             with col_service1:
                 vehicle_model_id = st.number_input("Vehicle ID", min_value=1, max_value=91, 
@@ -880,7 +880,7 @@ elif app_mode == "📊 Batch":
             st.success(f"✅ File loaded successfully! {len(df):,} records found.")
             
             # Enhanced preview
-            preview_tab1, preview_tab2 = st.tabs(["� Data Preview", "ℹ️ File Info"])
+            preview_tab1, preview_tab2 = st.tabs(["📊 Data Preview", "ℹ️ File Info"])
             
             with preview_tab1:
                 st.dataframe(df.head(10), use_container_width=True)
@@ -1182,7 +1182,7 @@ elif app_mode == "📈 Analytics Dashboard":
         
         with insights_col2:
             st.warning("""
-            **� Vehicle Insights**
+            **🚛 Vehicle Insights**
             - Premium vehicles (80+) higher risk
             - Economy vehicles more reliable
             - Vehicle age affects cancellation
@@ -1237,7 +1237,7 @@ elif app_mode == "ℹ️ About":
         | 🟠 **High** | 30% - 50% | Orange danger box | Proactive contact |
         | 🔴 **Critical** | 50%+ | Red critical box | Immediate intervention |
         
-        ### � **Risk Factor Analysis:**
+        ### ⚠️ **Risk Factor Analysis:**
         
         **🚨 High Risk Indicators:**
         - Late night bookings (22:00 - 05:00)
@@ -1464,3 +1464,4 @@ st.markdown("""
     </div>
 </div>
 """, unsafe_allow_html=True)
+
