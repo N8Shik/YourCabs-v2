@@ -331,10 +331,7 @@ def get_theme_css(theme_mode='dark'):
 </style>
 """
 
-# Apply theme-based CSS
-st.markdown(get_theme_css(st.session_state.theme_mode), unsafe_allow_html=True)
-
-# Initialize session state
+# Initialize session state first (before using it)
 if 'model_loaded' not in st.session_state:
     st.session_state.model_loaded = False
     st.session_state.predictor = None
@@ -343,6 +340,9 @@ if 'model_loaded' not in st.session_state:
     st.session_state.show_input_guide = False
     st.session_state.clear_form = False
     st.session_state.theme_mode = 'light'  # Default to light mode
+
+# Apply theme-based CSS (after session state is initialized)
+st.markdown(get_theme_css(st.session_state.theme_mode), unsafe_allow_html=True)
 
 def get_sample_data(risk_level: str):
     """Generate sample data for different risk levels - using REALISTIC training data ranges"""
