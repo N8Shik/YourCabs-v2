@@ -46,9 +46,62 @@ def get_theme_css(theme_mode='dark'):
         color: #333333 !important;
     }
     
-    /* Light mode sidebar */
-    .css-1d391kg {
+    /* Light mode sidebar - comprehensive styling */
+    .css-1d391kg, .stSidebar > div:first-child {
         background-color: #f8f9fa !important;
+    }
+    
+    /* Light mode sidebar content */
+    .stSidebar .element-container, .stSidebar .stMarkdown, .stSidebar .stText {
+        color: #333333 !important;
+    }
+    
+    /* Light mode sidebar headers and subheaders */
+    .stSidebar h1, .stSidebar h2, .stSidebar h3, .stSidebar h4, .stSidebar h5, .stSidebar h6 {
+        color: #1f77b4 !important;
+    }
+    
+    /* Light mode sidebar selectbox */
+    .stSidebar .stSelectbox > div > div {
+        background-color: #ffffff !important;
+        color: #333333 !important;
+        border: 1px solid #dee2e6 !important;
+    }
+    
+    /* Light mode sidebar buttons */
+    .stSidebar .stButton > button {
+        background-color: #ffffff !important;
+        color: #333333 !important;
+        border: 1px solid #dee2e6 !important;
+    }
+    
+    .stSidebar .stButton > button:hover {
+        background-color: #f8f9fa !important;
+        border-color: #1f77b4 !important;
+    }
+    
+    /* Light mode sidebar dividers */
+    .stSidebar hr {
+        border-color: #dee2e6 !important;
+    }
+    
+    /* Light mode sidebar success/info/warning messages */
+    .stSidebar .stSuccess {
+        background-color: #d4edda !important;
+        color: #155724 !important;
+        border: 1px solid #c3e6cb !important;
+    }
+    
+    .stSidebar .stInfo {
+        background-color: #d1ecf1 !important;
+        color: #0c5460 !important;
+        border: 1px solid #bee5eb !important;
+    }
+    
+    .stSidebar .stWarning {
+        background-color: #fff3cd !important;
+        color: #856404 !important;
+        border: 1px solid #ffeaa7 !important;
     }
     
     /* Style the main title - Light Mode */
@@ -150,15 +203,35 @@ def get_theme_css(theme_mode='dark'):
     /* Hide Streamlit menu and watermark */
     #MainMenu {visibility: hidden;}
     footer {visibility: hidden;}
-    header[data-testid="stHeader"] {visibility: hidden;}
+    
+    /* Show main header to preserve sidebar toggle */
+    header[data-testid="stHeader"] {
+        visibility: visible !important;
+        height: 2.875rem !important;
+        background: transparent !important;
+    }
+    
+    /* Hide only the specific header content we don't want */
+    header[data-testid="stHeader"] .css-18ni7ap {
+        display: none !important;
+    }
     
     /* Ensure sidebar toggle is visible - Light Mode */
     button[aria-label="Toggle sidebar"] {
         visibility: visible !important;
         opacity: 1 !important;
         display: block !important;
+        background-color: #1f77b4 !important;
+        color: white !important;
+        border: none !important;
+        border-radius: 4px !important;
     }
     
+    button[aria-label="Toggle sidebar"]:hover {
+        background-color: #0d6efd !important;
+    }
+    
+    /* Style collapsed sidebar control */
     [data-testid="collapsedControl"] {
         position: fixed !important;
         top: 1rem !important;
@@ -168,12 +241,18 @@ def get_theme_css(theme_mode='dark'):
         border-radius: 4px !important;
         padding: 0.5rem !important;
         box-shadow: 0 2px 4px rgba(0,0,0,0.1) !important;
+        visibility: visible !important;
+        display: block !important;
     }
     
     [data-testid="collapsedControl"] button {
         color: white !important;
         border: none !important;
         background: transparent !important;
+    }
+    
+    [data-testid="collapsedControl"]:hover {
+        background: #0d6efd !important;
     }
     
     /* Light mode specific overrides */
@@ -242,9 +321,62 @@ def get_theme_css(theme_mode='dark'):
         color: #721c24;
     }
     
-    /* Sidebar improvements */
-    .sidebar .sidebar-content {
-        padding: 1rem 0.5rem;
+    /* Dark mode sidebar - comprehensive styling */
+    .css-1d391kg, .stSidebar > div:first-child {
+        background-color: #262730 !important;
+    }
+    
+    /* Dark mode sidebar content */
+    .stSidebar .element-container, .stSidebar .stMarkdown, .stSidebar .stText {
+        color: #fafafa !important;
+    }
+    
+    /* Dark mode sidebar headers and subheaders */
+    .stSidebar h1, .stSidebar h2, .stSidebar h3, .stSidebar h4, .stSidebar h5, .stSidebar h6 {
+        color: #1f77b4 !important;
+    }
+    
+    /* Dark mode sidebar selectbox */
+    .stSidebar .stSelectbox > div > div {
+        background-color: #404040 !important;
+        color: #fafafa !important;
+        border: 1px solid #555555 !important;
+    }
+    
+    /* Dark mode sidebar buttons */
+    .stSidebar .stButton > button {
+        background-color: #404040 !important;
+        color: #fafafa !important;
+        border: 1px solid #555555 !important;
+    }
+    
+    .stSidebar .stButton > button:hover {
+        background-color: #555555 !important;
+        border-color: #1f77b4 !important;
+    }
+    
+    /* Dark mode sidebar dividers */
+    .stSidebar hr {
+        border-color: #555555 !important;
+    }
+    
+    /* Dark mode sidebar success/info/warning messages */
+    .stSidebar .stSuccess {
+        background-color: #1e4d3d !important;
+        color: #d4edda !important;
+        border: 1px solid #28a745 !important;
+    }
+    
+    .stSidebar .stInfo {
+        background-color: #1c4966 !important;
+        color: #d1ecf1 !important;
+        border: 1px solid #17a2b8 !important;
+    }
+    
+    .stSidebar .stWarning {
+        background-color: #664d03 !important;
+        color: #fff3cd !important;
+        border: 1px solid #ffc107 !important;
     }
     
     /* Compact form styling */
@@ -291,17 +423,31 @@ def get_theme_css(theme_mode='dark'):
         border-left: 3px solid #1f77b4;
     }
     
-    /* Hide Streamlit menu and watermark for cleaner look */
-    #MainMenu {visibility: hidden;}
-    footer {visibility: hidden;}
-    /* Hide main header but preserve sidebar toggle and controls */
-    header[data-testid="stHeader"] {visibility: hidden;}
+    /* Show main header to preserve sidebar toggle */
+    header[data-testid="stHeader"] {
+        visibility: visible !important;
+        height: 2.875rem !important;
+        background: transparent !important;
+    }
     
-    /* Ensure sidebar toggle is always visible */
+    /* Hide only the specific header content we don't want */
+    header[data-testid="stHeader"] .css-18ni7ap {
+        display: none !important;
+    }
+    
+    /* Ensure sidebar toggle is always visible - Dark Mode */
     button[aria-label="Toggle sidebar"] {
         visibility: visible !important;
         opacity: 1 !important;
         display: block !important;
+        background-color: #1f77b4 !important;
+        color: white !important;
+        border: none !important;
+        border-radius: 4px !important;
+    }
+    
+    button[aria-label="Toggle sidebar"]:hover {
+        background-color: #0d6efd !important;
     }
     
     /* Ensure sidebar controls are visible */
@@ -311,7 +457,7 @@ def get_theme_css(theme_mode='dark'):
         display: block !important;
     }
     
-    /* Style the native sidebar toggle button */
+    /* Style the native sidebar toggle button - Dark Mode */
     [data-testid="collapsedControl"] {
         position: fixed !important;
         top: 1rem !important;
@@ -320,13 +466,19 @@ def get_theme_css(theme_mode='dark'):
         background: #1f77b4 !important;
         border-radius: 4px !important;
         padding: 0.5rem !important;
-        box-shadow: 0 2px 4px rgba(0,0,0,0.1) !important;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.3) !important;
+        visibility: visible !important;
+        display: block !important;
     }
     
     [data-testid="collapsedControl"] button {
         color: white !important;
         border: none !important;
         background: transparent !important;
+    }
+    
+    [data-testid="collapsedControl"]:hover {
+        background: #0d6efd !important;
     }
 </style>
 """
