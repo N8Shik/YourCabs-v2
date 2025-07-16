@@ -1260,7 +1260,7 @@ elif app_mode == "ℹ️ About":
         with st.container():
             st.markdown("""
             **🏢 For Cab Companies:**
-            - � Optimize driver allocation
+            - 🚕 Optimize driver allocation
             - 📉 Reduce no-show incidents  
             - 💰 Improve revenue efficiency
             - 🔄 Plan backup vehicles
@@ -1316,7 +1316,7 @@ elif app_mode == "ℹ️ About":
         2. **📍 Geographic Features**: Area IDs, coordinates, distance calculations  
         3. **🚗 Service Features**: Vehicle type, travel purpose, booking channel
         4. **👤 Behavioral Features**: Booking patterns, advance/last-minute indicators
-        5. **� Interaction Features**: Cross-feature combinations for complex patterns
+        5. **🔗 Interaction Features**: Cross-feature combinations for complex patterns
         
         ### 🎯 **Prediction Pipeline:**
         
@@ -1419,7 +1419,7 @@ elif app_mode == "ℹ️ About":
     # Version and credits
     st.markdown("""
     <div style='text-align: center; color: #666; font-size: 0.9em; padding: 20px;'>
-        � <strong>YourCabs v2.0</strong> | Advanced Cancellation Prediction System<br>
+        🚕 <strong>YourCabs v2.0</strong> | Advanced Cancellation Prediction System<br>
         Built with ❤️ using Streamlit & XGBoost | 
         <a href='https://github.com/N8Shik/YourCabs-v2' target='_blank'>View Source Code</a>
     </div>
@@ -1458,10 +1458,15 @@ with st.expander("🛠️ Additional Tools & Information"):
 st.markdown("""
 <div class="footer-section">
     <div style='text-align: center;'>
-        <h4 style='color: #1f77b4; margin-bottom: 10px;'>� YourCabs v2.0</h4>
+        <h4 style='color: #1f77b4; margin-bottom: 10px;'>🚕 YourCabs v2.0</h4>
         <p style='color: #666; margin: 5px 0;'>Advanced ML-powered cancellation prediction</p>
         <p style='color: #888; font-size: 0.9em;'>Built with Streamlit & XGBoost</p>
     </div>
 </div>
 """, unsafe_allow_html=True)
+
+
+
+
+
 
