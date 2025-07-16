@@ -36,17 +36,16 @@ st.markdown("""
         max-width: 1200px;
     }
     
-    /* Simplified header */
-    .main-header {
-        font-size: 2.2rem;
-        color: #1f77b4;
+    /* Style the main title */
+    .main h1 {
         text-align: center;
-        margin-bottom: 1.5rem;
+        color: #1f77b4;
+        font-weight: 600;
+        margin-bottom: 2rem;
         padding: 1rem;
-        background: #f8f9fa;
+        background: linear-gradient(90deg, #f8f9fa 0%, #e9ecef 100%);
         border-radius: 8px;
         border-left: 4px solid #1f77b4;
-        font-weight: 600;
     }
     
     /* Cleaner prediction boxes */
@@ -277,8 +276,8 @@ def get_default_values():
         'from_city_id': 1
     }
 
-# Header - Simplified
-st.markdown('<div class="main-header">🚗 YourCabs - Cancellation Prediction</div>', unsafe_allow_html=True)
+# Header - Clean title
+st.title("🚗 YourCabs - Cancellation Prediction")
 
 # Sidebar - Streamlined
 with st.sidebar:
