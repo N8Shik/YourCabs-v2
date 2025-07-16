@@ -1,6 +1,6 @@
 """
-YourCabs Cancellation Prediction - Streamlit Application (Simplified)
-A robust, error-handling version of the prediction app
+YourCabs Cancellation Prediction - Main Streamlit Application
+Advanced ML-powered cancellation prediction system with professional UI/UX
 """
 
 import streamlit as st
@@ -1022,7 +1022,7 @@ elif app_mode == "ℹ️ About":
         pip install -r requirements.txt
         
         # Run application
-        streamlit run src/app_simple.py
+        streamlit run src/app.py
         ```
         
         **🔗 Repository:**

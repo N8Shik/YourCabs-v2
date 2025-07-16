@@ -106,7 +106,7 @@ pip install -r requirements.txt
 start_app.bat
 
 # Option 2: Direct Command
-streamlit run src/app_simple.py
+streamlit run src/app.py
 ```
 
 ### **3️⃣ Start Predicting**
@@ -120,7 +120,7 @@ streamlit run src/app_simple.py
 ```
 YourCabs-v2/
 ├── 🎨 src/                      # Enhanced source code
-│   ├── app_simple.py           # Main Streamlit app with v2 features
+│   ├── app.py                  # Main Streamlit app with v2 features
 │   ├── model_utils.py          # Enhanced model utilities
 │   ├── data_processor.py       # Advanced data processing
 │   └── config.py               # Configuration management
@@ -187,7 +187,7 @@ YourCabs-v2/
 ## 🎨 **Customization**
 
 ### **🎨 Styling**
-- Modify CSS in `app_simple.py` for custom themes
+- Modify CSS in `app.py` for custom themes
 - Adjust color schemes in prediction boxes
 - Customize sidebar layout and navigation
 
@@ -201,7 +201,7 @@ YourCabs-v2/
 ### **Common Issues**
 1. **Model Loading Error**: Ensure `models/best_model.joblib` exists
 2. **Import Error**: Run `pip install -r requirements.txt`
-3. **Port Conflict**: Use `streamlit run src/app_simple.py --server.port 8502`
+3. **Port Conflict**: Use `streamlit run src/app.py --server.port 8502`
 
 ### **🐛 Debug Mode**
 - Use the "🔍 Debug Info" panel to see exact model inputs
