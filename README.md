@@ -102,11 +102,14 @@ pip install -r requirements.txt
 
 ### **2️⃣ Launch Application**
 ```bash
-# Option 1: Windows Batch File
-start_app.bat
+# Option 1: Root Level (Streamlit Cloud Default)
+streamlit run app.py
 
-# Option 2: Direct Command
+# Option 2: Source Directory (Local Development)
 streamlit run src/app.py
+
+# Option 3: Windows Batch File
+start_app.bat
 ```
 
 ### **3️⃣ Start Predicting**

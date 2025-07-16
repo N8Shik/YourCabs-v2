@@ -190,3 +190,38 @@ Thumbs.db
 *.log
 temp/
 logs/
+
+# Redundant documentation files
+*_v2.md
+UI_COMPARISON.md
+COMPARISON.md
+
+# Duplicate app files
+app_simple.py
+main.py
+run.py
+
+# OS specific scripts (keep only one for your OS)
+*.sh  # Unix shell scripts (if on Windows)
+# *.bat  # Windows batch files (if on Unix)
+
+# Backup and temporary files
+*.bak
+*.backup
+*_backup.*
+*_old.*
+*.orig
+*.save
+
+# IDE and editor files
+.idea/
+.vscode/settings.json
+.vscode/launch.json
+*.swp
+*.swo
+*~
+
+# Deployment files (if not needed)
+# Procfile
+# railway.toml
+# vercel.json

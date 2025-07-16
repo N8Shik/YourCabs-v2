@@ -34,7 +34,7 @@ echo.
 echo ⏹️  Press Ctrl+C to stop the application
 echo.
 
-streamlit run src/app_simple.py
+streamlit run src/app.py
 
 echo.
 echo 👋 Application stopped. Press any key to exit.
