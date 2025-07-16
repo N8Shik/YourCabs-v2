@@ -717,35 +717,35 @@ elif app_mode == "🔮 Predict":
                 gauge_col1, gauge_col2, gauge_col3 = st.columns([1, 3, 1])
                 
                 with gauge_col2:
-                    # Smart progress bar with proper scaling
-                    risk_percentage = probability * 100
+                    # Smart progress bar with proper scaling - convert to Python float to avoid numpy type issues
+                    risk_percentage = float(probability * 100)
                     
                     if risk_percentage < 5:
                         st.success(f"Risk Level: {risk_percentage:.1f}%")
-                        progress_value = min(risk_percentage / 50, 1.0)  # Scale 0-5% to 0-10%
+                        progress_value = float(min(risk_percentage / 50, 1.0))  # Scale 0-5% to 0-10%
                         st.progress(progress_value, text="🟢 Very Low Risk Zone")
                     elif risk_percentage < 15:
                         st.success(f"Risk Level: {risk_percentage:.1f}%")
-                        progress_value = 0.1 + min((risk_percentage - 5) / 50, 0.2)  # Scale 5-15% to 10-30%
+                        progress_value = float(0.1 + min((risk_percentage - 5) / 50, 0.2))  # Scale 5-15% to 10-30%
                         st.progress(progress_value, text="🟢 Low Risk Zone")
                     elif risk_percentage < 30:
                         st.warning(f"Risk Level: {risk_percentage:.1f}%")
-                        progress_value = 0.3 + min((risk_percentage - 15) / 50, 0.3)  # Scale 15-30% to 30-60%
+                        progress_value = float(0.3 + min((risk_percentage - 15) / 50, 0.3))  # Scale 15-30% to 30-60%
                         st.progress(progress_value, text="🟡 Medium Risk Zone")
                     elif risk_percentage < 50:
                         st.error(f"Risk Level: {risk_percentage:.1f}%")
-                        progress_value = 0.6 + min((risk_percentage - 30) / 50, 0.3)  # Scale 30-50% to 60-90%
+                        progress_value = float(0.6 + min((risk_percentage - 30) / 50, 0.3))  # Scale 30-50% to 60-90%
                         st.progress(progress_value, text="🟠 High Risk Zone")
                     else:
                         st.error(f"Risk Level: {risk_percentage:.1f}%")
-                        progress_value = 0.9 + min((risk_percentage - 50) / 100, 0.1)  # Scale 50%+ to 90-100%
+                        progress_value = float(0.9 + min((risk_percentage - 50) / 100, 0.1))  # Scale 50%+ to 90-100%
                         st.progress(progress_value, text="🔴 Critical Risk Zone")
                 
                 # Interactive Plotly Gauge Chart
                 with st.expander("📊 Interactive Gauge Chart"):
                     fig = go.Figure(go.Indicator(
                         mode="gauge+number+delta",
-                        value=probability * 100,
+                        value=float(probability * 100),  # Convert to Python float
                         domain={'x': [0, 1], 'y': [0, 1]},
                         title={'text': "Cancellation Risk %", 'font': {'size': 16}},
                         delta={'reference': 25, 'increasing': {'color': "red"}, 'decreasing': {'color': "green"}},
