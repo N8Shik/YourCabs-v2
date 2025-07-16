@@ -129,7 +129,40 @@ st.markdown("""
     /* Hide Streamlit menu and watermark for cleaner look */
     #MainMenu {visibility: hidden;}
     footer {visibility: hidden;}
-    header {visibility: hidden;}
+    /* Hide main header but preserve sidebar toggle and controls */
+    header[data-testid="stHeader"] {visibility: hidden;}
+    
+    /* Ensure sidebar toggle is always visible */
+    button[aria-label="Toggle sidebar"] {
+        visibility: visible !important;
+        opacity: 1 !important;
+        display: block !important;
+    }
+    
+    /* Ensure sidebar controls are visible */
+    .sidebar-toggle-button,
+    [data-testid="collapsedControl"] {
+        visibility: visible !important;
+        display: block !important;
+    }
+    
+    /* Style the native sidebar toggle button */
+    [data-testid="collapsedControl"] {
+        position: fixed !important;
+        top: 1rem !important;
+        left: 1rem !important;
+        z-index: 999999 !important;
+        background: #1f77b4 !important;
+        border-radius: 4px !important;
+        padding: 0.5rem !important;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1) !important;
+    }
+    
+    [data-testid="collapsedControl"] button {
+        color: white !important;
+        border: none !important;
+        background: transparent !important;
+    }
 </style>
 """, unsafe_allow_html=True)
 
@@ -297,7 +330,7 @@ def get_default_values():
     }
 
 # Header - Clean title
-st.title("🚗 YourCabs - Cancellation Prediction")
+st.title("YourCabs - Cancellation Prediction")
 
 # Sidebar - Streamlined
 with st.sidebar:
@@ -572,7 +605,7 @@ elif app_mode == "🔮 Predict":
             st.markdown("---")
             
             # Service section
-            st.write("**🚗 Service Details**")
+            st.write("**� Service Details**")
             col_service1, col_service2 = st.columns(2)
             with col_service1:
                 vehicle_model_id = st.number_input("Vehicle ID", min_value=1, max_value=91, 
@@ -1149,7 +1182,7 @@ elif app_mode == "📈 Analytics Dashboard":
         
         with insights_col2:
             st.warning("""
-            **🚗 Vehicle Insights**
+            **� Vehicle Insights**
             - Premium vehicles (80+) higher risk
             - Economy vehicles more reliable
             - Vehicle age affects cancellation
@@ -1171,7 +1204,7 @@ elif app_mode == "ℹ️ About":
     
     with col1:
         st.markdown("""
-        ## 🚗 **YourCabs v2.0 - Advanced Cancellation Prediction**
+        ## � **YourCabs v2.0 - Advanced Cancellation Prediction**
         
         This application uses cutting-edge machine learning to predict booking cancellation risk in real-time, 
         helping cab companies optimize operations and improve customer retention.
@@ -1227,7 +1260,7 @@ elif app_mode == "ℹ️ About":
         with st.container():
             st.markdown("""
             **🏢 For Cab Companies:**
-            - 🚗 Optimize driver allocation
+            - � Optimize driver allocation
             - 📉 Reduce no-show incidents  
             - 💰 Improve revenue efficiency
             - 🔄 Plan backup vehicles
@@ -1386,7 +1419,7 @@ elif app_mode == "ℹ️ About":
     # Version and credits
     st.markdown("""
     <div style='text-align: center; color: #666; font-size: 0.9em; padding: 20px;'>
-        🚗 <strong>YourCabs v2.0</strong> | Advanced Cancellation Prediction System<br>
+        � <strong>YourCabs v2.0</strong> | Advanced Cancellation Prediction System<br>
         Built with ❤️ using Streamlit & XGBoost | 
         <a href='https://github.com/N8Shik/YourCabs-v2' target='_blank'>View Source Code</a>
     </div>
@@ -1425,7 +1458,7 @@ with st.expander("🛠️ Additional Tools & Information"):
 st.markdown("""
 <div class="footer-section">
     <div style='text-align: center;'>
-        <h4 style='color: #1f77b4; margin-bottom: 10px;'>🚗 YourCabs v2.0</h4>
+        <h4 style='color: #1f77b4; margin-bottom: 10px;'>� YourCabs v2.0</h4>
         <p style='color: #666; margin: 5px 0;'>Advanced ML-powered cancellation prediction</p>
         <p style='color: #888; font-size: 0.9em;'>Built with Streamlit & XGBoost</p>
     </div>
