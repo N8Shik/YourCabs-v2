@@ -26,10 +26,175 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
-# Custom CSS - Cleaner, less cluttered design
-st.markdown("""
+def get_theme_css(theme_mode='dark'):
+    """Generate CSS based on theme mode"""
+    if theme_mode == 'light':
+        return """
 <style>
-    /* Main layout improvements */
+    /* Light Mode Theme */
+    .main .block-container {
+        padding-top: 2rem;
+        padding-bottom: 1rem;
+        max-width: 1200px;
+        background-color: #ffffff;
+        color: #333333;
+    }
+    
+    /* Override Streamlit's default dark background */
+    .stApp {
+        background-color: #ffffff !important;
+        color: #333333 !important;
+    }
+    
+    /* Light mode sidebar */
+    .css-1d391kg {
+        background-color: #f8f9fa !important;
+    }
+    
+    /* Style the main title - Light Mode */
+    .main h1 {
+        text-align: center;
+        color: #1f77b4;
+        font-weight: 600;
+        margin-bottom: 2rem;
+        padding: 1rem;
+        background: linear-gradient(90deg, #f8f9fa 0%, #e9ecef 100%);
+        border-radius: 8px;
+        border-left: 4px solid #1f77b4;
+    }
+    
+    /* Light mode prediction boxes */
+    .prediction-box {
+        padding: 1.2rem;
+        border-radius: 12px;
+        margin: 0.8rem 0;
+        text-align: center;
+        font-size: 1.1rem;
+        font-weight: 600;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    
+    .success-box {
+        background: #d4edda;
+        border: 1px solid #28a745;
+        color: #155724;
+    }
+    
+    .warning-box {
+        background: #fff3cd;
+        border: 1px solid #ffc107;
+        color: #856404;
+    }
+    
+    .danger-box {
+        background: #f8d7da;
+        border: 1px solid #dc3545;
+        color: #721c24;
+    }
+    
+    /* Light mode form styling */
+    .stSelectbox > div > div {
+        font-size: 0.9rem;
+        background-color: #ffffff;
+        color: #333333;
+    }
+    
+    .stNumberInput > div > div > input {
+        font-size: 0.9rem;
+        background-color: #ffffff;
+        color: #333333;
+    }
+    
+    /* Light mode button styling */
+    .stButton > button {
+        border-radius: 6px;
+        border: 1px solid #dee2e6;
+        transition: all 0.2s;
+        background-color: #ffffff;
+        color: #333333;
+    }
+    
+    .stButton > button:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        background-color: #f8f9fa;
+    }
+    
+    /* Light mode file uploader */
+    .stFileUploader > div > div {
+        border: 2px dashed #1f77b4;
+        border-radius: 8px;
+        padding: 1rem;
+        background: #f8f9fa;
+        color: #333333;
+    }
+    
+    /* Light mode expandable sections */
+    .streamlit-expanderHeader {
+        font-size: 0.95rem;
+        font-weight: 600;
+        background-color: #f8f9fa;
+        color: #333333;
+    }
+    
+    /* Light mode footer */
+    .footer-section {
+        background: #f8f9fa;
+        padding: 1.5rem;
+        border-radius: 8px;
+        margin-top: 1rem;
+        border-left: 3px solid #1f77b4;
+        color: #333333;
+    }
+    
+    /* Hide Streamlit menu and watermark */
+    #MainMenu {visibility: hidden;}
+    footer {visibility: hidden;}
+    header[data-testid="stHeader"] {visibility: hidden;}
+    
+    /* Ensure sidebar toggle is visible - Light Mode */
+    button[aria-label="Toggle sidebar"] {
+        visibility: visible !important;
+        opacity: 1 !important;
+        display: block !important;
+    }
+    
+    [data-testid="collapsedControl"] {
+        position: fixed !important;
+        top: 1rem !important;
+        left: 1rem !important;
+        z-index: 999999 !important;
+        background: #1f77b4 !important;
+        border-radius: 4px !important;
+        padding: 0.5rem !important;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1) !important;
+    }
+    
+    [data-testid="collapsedControl"] button {
+        color: white !important;
+        border: none !important;
+        background: transparent !important;
+    }
+    
+    /* Light mode specific overrides */
+    .stMarkdown, .stText {
+        color: #333333 !important;
+    }
+    
+    /* Light mode metrics */
+    [data-testid="metric-container"] {
+        background-color: #ffffff;
+        border: 1px solid #e9ecef;
+        padding: 1rem;
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    }
+</style>
+"""
+    else:  # Dark mode (default)
+        return """
+<style>
+    /* Dark Mode Theme (Original) */
     .main .block-container {
         padding-top: 2rem;
         padding-bottom: 1rem;
@@ -164,7 +329,10 @@ st.markdown("""
         background: transparent !important;
     }
 </style>
-""", unsafe_allow_html=True)
+"""
+
+# Apply theme-based CSS
+st.markdown(get_theme_css(st.session_state.theme_mode), unsafe_allow_html=True)
 
 # Initialize session state
 if 'model_loaded' not in st.session_state:
@@ -174,6 +342,7 @@ if 'model_loaded' not in st.session_state:
     st.session_state.sample_data = None
     st.session_state.show_input_guide = False
     st.session_state.clear_form = False
+    st.session_state.theme_mode = 'light'  # Default to light mode
 
 def get_sample_data(risk_level: str):
     """Generate sample data for different risk levels - using REALISTIC training data ranges"""
@@ -335,6 +504,26 @@ st.title("YourCabs - Cancellation Prediction")
 # Sidebar - Streamlined
 with st.sidebar:
     st.header("🎛️ Controls")
+    
+    # Theme Toggle - Compact
+    st.subheader("🎨 Theme")
+    theme_col1, theme_col2 = st.columns(2)
+    with theme_col1:
+        if st.button("☀️ Light", use_container_width=True, 
+                    disabled=st.session_state.theme_mode == 'light'):
+            st.session_state.theme_mode = 'light'
+            st.rerun()
+    with theme_col2:
+        if st.button("🌙 Dark", use_container_width=True,
+                    disabled=st.session_state.theme_mode == 'dark'):
+            st.session_state.theme_mode = 'dark'
+            st.rerun()
+    
+    # Show current theme
+    current_theme = "☀️ Light Mode" if st.session_state.theme_mode == 'light' else "🌙 Dark Mode"
+    st.caption(f"Current: {current_theme}")
+    
+    st.markdown("---")
     
     # Model loading section - Compact
     if not st.session_state.model_loaded:
