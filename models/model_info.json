@@ -1,0 +1,44 @@
+{
+  "model_type": "XGBoost",
+  "model_version": "2.0",
+  "training_date": "2025-07-16T05:01:27.934809",
+  "configuration": "XGBoost with scale_pos_weight (NO SMOTE)",
+  "test_auc": 0.8873637436273653,
+  "cv_auc": 0.8855798084600236,
+  "best_parameters": {
+    "subsample": 0.9,
+    "reg_lambda": 5,
+    "reg_alpha": 0,
+    "n_estimators": 300,
+    "max_depth": 6,
+    "learning_rate": 0.05,
+    "colsample_bytree": 1.0
+  },
+  "features": [
+    "online_booking",
+    "mobile_site_booking",
+    "vehicle_model_id",
+    "travel_type_id",
+    "from_area_id",
+    "to_area_id",
+    "booking_hour",
+    "booking_day_of_week",
+    "booking_month",
+    "is_round_trip",
+    "channel_mobile",
+    "channel_online",
+    "channel_other",
+    "from_lat",
+    "from_long",
+    "to_lat",
+    "to_long",
+    "from_city_id"
+  ],
+  "feature_count": 18,
+  "prediction_range": {
+    "min": 0.0003832172660622746,
+    "max": 0.9656476378440857,
+    "mean": 0.23626840114593506,
+    "median": 0.10941707342863083
+  }
+}
