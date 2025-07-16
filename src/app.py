@@ -26,46 +26,91 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
-# Custom CSS
+# Custom CSS - Cleaner, less cluttered design
 st.markdown("""
 <style>
-    .main-header {
-        font-size: 2.5rem;
-        color: #1f77b4;
-        text-align: center;
-        margin-bottom: 2rem;
-        padding: 1rem;
-        background: linear-gradient(90deg, #f8f9fa, #e9ecef);
-        border-radius: 10px;
-        border-left: 5px solid #1f77b4;
+    /* Main layout improvements */
+    .main .block-container {
+        padding-top: 2rem;
+        padding-bottom: 1rem;
+        max-width: 1200px;
     }
     
-    .prediction-box {
-        padding: 1.5rem;
-        border-radius: 15px;
-        margin: 1rem 0;
+    /* Simplified header */
+    .main-header {
+        font-size: 2.2rem;
+        color: #1f77b4;
         text-align: center;
-        font-size: 1.2rem;
-        font-weight: bold;
+        margin-bottom: 1.5rem;
+        padding: 1rem;
+        background: #f8f9fa;
+        border-radius: 8px;
+        border-left: 4px solid #1f77b4;
+        font-weight: 600;
+    }
+    
+    /* Cleaner prediction boxes */
+    .prediction-box {
+        padding: 1.2rem;
+        border-radius: 12px;
+        margin: 0.8rem 0;
+        text-align: center;
+        font-size: 1.1rem;
+        font-weight: 600;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
     }
     
     .success-box {
-        background: linear-gradient(135deg, #d4edda, #c3e6cb);
-        border: 2px solid #28a745;
+        background: #d4edda;
+        border: 1px solid #28a745;
         color: #155724;
     }
     
     .warning-box {
-        background: linear-gradient(135deg, #fff3cd, #ffeaa7);
-        border: 2px solid #ffc107;
+        background: #fff3cd;
+        border: 1px solid #ffc107;
         color: #856404;
     }
     
     .danger-box {
-        background: linear-gradient(135deg, #f8d7da, #f5c6cb);
-        border: 2px solid #dc3545;
+        background: #f8d7da;
+        border: 1px solid #dc3545;
         color: #721c24;
     }
+    
+    /* Sidebar improvements */
+    .sidebar .sidebar-content {
+        padding: 1rem 0.5rem;
+    }
+    
+    /* Compact form styling */
+    .stSelectbox > div > div {
+        font-size: 0.9rem;
+    }
+    
+    .stNumberInput > div > div > input {
+        font-size: 0.9rem;
+    }
+    
+    /* Reduce spacing in expandable sections */
+    .streamlit-expanderHeader {
+        font-size: 0.95rem;
+        font-weight: 600;
+    }
+    
+    /* Footer styling */
+    .footer-section {
+        background: #f8f9fa;
+        padding: 1.5rem;
+        border-radius: 8px;
+        margin-top: 1rem;
+        border-left: 3px solid #1f77b4;
+    }
+    
+    /* Hide Streamlit menu and watermark for cleaner look */
+    #MainMenu {visibility: hidden;}
+    footer {visibility: hidden;}
+    header {visibility: hidden;}
 </style>
 """, unsafe_allow_html=True)
 
@@ -232,274 +277,225 @@ def get_default_values():
         'from_city_id': 1
     }
 
-# Header
-st.markdown('<div class="main-header">🚗 YourCabs - Smart Cancellation Prediction</div>', unsafe_allow_html=True)
+# Header - Simplified
+st.markdown('<div class="main-header">🚗 YourCabs - Cancellation Prediction</div>', unsafe_allow_html=True)
 
-# Sidebar
+# Sidebar - Streamlined
 with st.sidebar:
-    st.header("🎛️ Navigation")
+    st.header("🎛️ Controls")
     
-    # Model loading section
-    st.subheader("📊 Model Status")
-    
+    # Model loading section - Compact
     if not st.session_state.model_loaded:
-        if st.button("🔄 Load Model", type="primary"):
-            with st.spinner("Loading ML model..."):
+        st.subheader("📊 Model")
+        if st.button("🔄 Load Model", type="primary", use_container_width=True):
+            with st.spinner("Loading..."):
                 try:
-                    # Try to import and load model
                     from model_utils import ModelPredictor
                     st.session_state.predictor = ModelPredictor()
                     st.session_state.model_loaded = True
-                    st.success("✅ Model loaded successfully!")
+                    st.success("✅ Ready!")
                     st.rerun()
                 except Exception as e:
-                    st.error(f"❌ Failed to load model: {str(e)}")
-                    
-                    # Show troubleshooting info
-                    st.info("""
-                    **Troubleshooting:**
-                    1. Ensure model files exist in models/ folder
-                    2. Check if all dependencies are installed
-                    3. Verify the working directory is correct
-                    """)
+                    st.error(f"❌ Error: {str(e)}")
+                    with st.expander("💡 Troubleshooting"):
+                        st.write("• Check model files in models/ folder")
+                        st.write("• Verify dependencies are installed")
     else:
         st.success("✅ Model Ready")
-        
-        # Show model info if available
-        try:
-            model_info = st.session_state.predictor.get_model_info()
-            with st.expander("📋 Model Details"):
-                for key, value in model_info.items():
-                    st.write(f"**{key}:** {value}")
-        except:
-            st.warning("Model info not available")
     
-    # Navigation
-    st.subheader("📱 Application Modes")
+    # Navigation - Simplified
     if st.session_state.model_loaded:
+        st.subheader("📱 Mode")
         app_mode = st.selectbox(
-            "Choose Mode:",
-            ["🔮 Single Prediction", "📊 Batch Analysis", "📈 Analytics Dashboard", "ℹ️ About"]
+            "Choose:",
+            ["🔮 Predict", "📊 Batch", "📈 Analytics", "ℹ️ About"],
+            label_visibility="collapsed"
         )
     else:
-        st.info("Load model first to access features")
         app_mode = "ℹ️ About"
     
-    # Quick Actions Section
-    if st.session_state.model_loaded and app_mode == "🔮 Single Prediction":
-        st.subheader("⚡ Quick Actions")
+    # Quick Actions - Compact layout
+    if st.session_state.model_loaded and app_mode == "🔮 Predict":
+        st.subheader("⚡ Quick Start")
         
-        st.write("**🎲 Smart Example Scenarios:**")
-        
+        # Sample scenarios in 2x2 grid
         col1, col2 = st.columns(2)
-        
         with col1:
-            if st.button("🟢 Low Risk", help="Load sample data for low cancellation risk"):
+            if st.button("🟢 Low", help="Low risk sample", use_container_width=True):
                 st.session_state.sample_data = get_sample_data("low_risk")
                 st.session_state.load_sample = True
                 st.rerun()
-            
-            if st.button("🟡 Medium Risk", help="Load sample data for medium cancellation risk"):
+            if st.button("🟡 Medium", help="Medium risk sample", use_container_width=True):
                 st.session_state.sample_data = get_sample_data("medium_risk")
                 st.session_state.load_sample = True
                 st.rerun()
         
         with col2:
-            if st.button("🔴 High Risk", help="Load sample data for high cancellation risk"):
+            if st.button("🔴 High", help="High risk sample", use_container_width=True):
                 st.session_state.sample_data = get_sample_data("high_risk")
                 st.session_state.load_sample = True
                 st.rerun()
-            
-            if st.button("🎯 Random", help="Load random sample data"):
+            if st.button("🎯 Random", help="Random sample", use_container_width=True):
                 st.session_state.sample_data = get_sample_data("random")
                 st.session_state.load_sample = True
                 st.rerun()
         
-        # Show which example is currently loaded
+        # Show loaded sample indicator
         if st.session_state.load_sample and st.session_state.sample_data:
-            sample_type = "Unknown"
             sample_data = st.session_state.sample_data
             if sample_data.get('vehicle_model_id') == 90:
-                sample_type = "🟢 **Low Risk Pattern**"
+                st.info("🟢 Low risk pattern loaded")
             elif sample_data.get('vehicle_model_id') == 2:
-                sample_type = "🟡 **Medium Risk Pattern**"
+                st.info("🟡 Medium risk pattern loaded")
             elif sample_data.get('vehicle_model_id') == 89:
-                sample_type = "🔴 **High Risk Pattern**"
+                st.info("🔴 High risk pattern loaded")
             else:
-                sample_type = "🎯 **Random Pattern**"
-            
-            st.info(f"💡 {sample_type} loaded! Values are now in the form below.")
+                st.info("🎯 Random pattern loaded")
         
-        st.write("**📋 Help & Tools:**")
-        if st.button("📖 Input Guide", help="Show detailed input explanations"):
+        # Compact help section
+        st.subheader("🛠️ Tools")
+        if st.button("📖 Guide", help="Input field guide", use_container_width=True):
             st.session_state.show_input_guide = True
             st.rerun()
         
-        if st.button("🔄 Clear Form", help="Reset all form fields"):
+        if st.button("🔄 Reset", help="Clear form", use_container_width=True):
             st.session_state.clear_form = True
             st.session_state.load_sample = False
             st.session_state.sample_data = None
             st.rerun()
         
-        # Enhanced model performance info
-        st.markdown("---")
-        st.subheader("📊 Model Performance")
-        try:
-            model_info = st.session_state.predictor.get_model_info()
-            
-            # Performance metrics in columns
-            perf_col1, perf_col2 = st.columns(2)
-            with perf_col1:
-                st.metric("🎯 AUC Score", f"{model_info.get('auc_score', 0.85):.1%}")
-            with perf_col2:
-                st.metric("✅ Accuracy", f"{model_info.get('accuracy', 0.85):.1%}")
-            
-            # Model type indicator
-            if model_info.get('model_type') == 'XGBoost':
-                st.success("🚀 **XGBoost Model** - High Performance")
-            else:
-                st.info("🤖 **Machine Learning Model**")
-                
-            # Feature count
-            feature_count = model_info.get('feature_count', 'Unknown')
-            st.write(f"📈 **Features:** {feature_count}")
-            
-        except:
-            # Fallback if model info not available
-            st.metric("🎯 Model Status", "✅ Ready")
-            st.info("🤖 **Advanced ML Model** - Optimized for risk prediction")
+        # Simplified model performance
+        with st.expander("📊 Model Info"):
+            try:
+                model_info = st.session_state.predictor.get_model_info()
+                st.write(f"🎯 AUC: {model_info.get('auc_score', 0.85):.1%}")
+                st.write(f"✅ Accuracy: {model_info.get('accuracy', 0.85):.1%}")
+                st.write(f"🚀 Type: {model_info.get('model_type', 'XGBoost')}")
+            except:
+                st.write("🤖 Advanced ML Model Ready")
 
-# Main content
+# Main content - Cleaner layout
 if not st.session_state.model_loaded and app_mode != "ℹ️ About":
     st.warning("⚠️ Please load the model first using the sidebar.")
     st.info("""
-    👋 **Welcome to YourCabs Cancellation Prediction System!**
+    **Welcome to YourCabs Prediction System!**
     
-    This application uses advanced machine learning to predict booking cancellation risk.
+    ⚡ Features:
+    • 🎯 Real-time risk prediction
+    • 📊 Batch processing  
+    • 📈 Analytics dashboard
+    • 🎨 Clean interface
     
-    **Features:**
-    - 🎯 Real-time cancellation risk prediction
-    - 📊 Batch processing for multiple bookings
-    - 📈 Interactive analytics dashboard
-    - 🎨 Beautiful and intuitive interface
-    
-    **Getting Started:**
-    1. Click "Load Model" in the sidebar
-    2. Choose your preferred mode
-    3. Start predicting!
+    **Get Started:** Load the model → Choose mode → Start predicting!
     """)
 
-elif app_mode == "🔮 Single Prediction":
-    st.header("🔮 Single Booking Prediction")
+elif app_mode == "🔮 Predict":
+    st.header("🔮 Booking Risk Prediction")
     
-    # Show Input Guide if requested
+    # Compact Input Guide
     if st.session_state.show_input_guide:
         with st.expander("📖 Input Field Guide", expanded=True):
             show_input_guide()
-        
         if st.button("✖️ Close Guide"):
             st.session_state.show_input_guide = False
             st.rerun()
-        
         st.markdown("---")
     
-    col1, col2 = st.columns([2, 1])
+    # Main prediction interface - Better spacing
+    col1, col2 = st.columns([3, 2])
     
     with col1:
-        st.subheader("📝 Booking Information")
+        st.subheader("📝 Booking Details")
         
-        # Handle sample data loading and form clearing
+        # Streamlined form handling
         default_values = get_default_values()
-        
-        # Use session state to track current form values
         if 'current_form_values' not in st.session_state:
             st.session_state.current_form_values = default_values
             
         if st.session_state.load_sample and st.session_state.sample_data:
             st.session_state.current_form_values = st.session_state.sample_data
-            st.session_state.load_sample = False  # Reset after loading
-            # Show notification about loaded sample
-            st.success(f"✅ Sample data loaded! Form values updated.")
+            st.session_state.load_sample = False
         elif st.session_state.clear_form:
             st.session_state.current_form_values = default_values
-            st.session_state.clear_form = False  # Reset after clearing
-            st.info("🔄 Form cleared to default values.")
+            st.session_state.clear_form = False
             
         form_values = st.session_state.current_form_values
         
-        # Create input form with stable key
+        # Cleaner form layout
         with st.form("prediction_form", clear_on_submit=False):
-            # Time information
+            # Time section
+            st.write("**📅 Timing**")
             col_time1, col_time2 = st.columns(2)
             with col_time1:
-                booking_date = st.date_input("📅 Booking Date", value=form_values['booking_date'])
+                booking_date = st.date_input("Date", value=form_values['booking_date'])
             with col_time2:
-                booking_time = st.time_input("⏰ Booking Time", value=form_values['booking_time'])
+                booking_time = st.time_input("Time", value=form_values['booking_time'])
             
-            # Booking details
+            st.markdown("---")
+            
+            # Booking section
+            st.write("**💻 Channel & Type**")
             col_booking1, col_booking2 = st.columns(2)
             with col_booking1:
-                online_booking = st.selectbox("💻 Online Booking", [0, 1], 
+                online_booking = st.selectbox("Online", [0, 1], 
                                             index=form_values['online_booking'],
                                             format_func=lambda x: "Yes" if x == 1 else "No")
-                mobile_site_booking = st.selectbox("📱 Mobile Booking", [0, 1], 
-                                                 index=form_values['mobile_site_booking'],
-                                                 format_func=lambda x: "Yes" if x == 1 else "No")
+                booking_channel = st.selectbox("Channel", ["online", "mobile", "phone", "other"],
+                                             index=["online", "mobile", "phone", "other"].index(form_values['booking_channel']))
             
             with col_booking2:
-                booking_channel_options = ["online", "mobile", "phone", "other"]
-                booking_channel = st.selectbox("📢 Booking Channel", booking_channel_options,
-                                             index=booking_channel_options.index(form_values['booking_channel']))
-                is_round_trip = st.selectbox("🔄 Round Trip", [False, True], 
+                mobile_site_booking = st.selectbox("Mobile", [0, 1], 
+                                                 index=form_values['mobile_site_booking'],
+                                                 format_func=lambda x: "Yes" if x == 1 else "No")
+                is_round_trip = st.selectbox("Round Trip", [False, True], 
                                            index=1 if form_values['is_round_trip'] else 0,
                                            format_func=lambda x: "Yes" if x else "No")
             
-            # Vehicle and travel information
-            col_vehicle1, col_vehicle2 = st.columns(2)
-            with col_vehicle1:
-                vehicle_model_id = st.number_input("🚗 Vehicle Model ID", min_value=1, max_value=91, 
+            st.markdown("---")
+            
+            # Service section
+            st.write("**🚗 Service Details**")
+            col_service1, col_service2 = st.columns(2)
+            with col_service1:
+                vehicle_model_id = st.number_input("Vehicle ID", min_value=1, max_value=91, 
                                                  value=form_values['vehicle_model_id'])
-                travel_type_id = st.selectbox("✈️ Travel Type", [1, 2, 3], 
+                from_area_id = st.number_input("From Area", min_value=6, max_value=1391, 
+                                              value=form_values['from_area_id'])
+            
+            with col_service2:
+                travel_type_id = st.selectbox("Travel Type", [1, 2, 3], 
                                             index=form_values['travel_type_id']-1,
                                             format_func=lambda x: {"1": "Business", "2": "Leisure", "3": "Other"}[str(x)])
-            
-            with col_vehicle2:
-                from_area_id = st.number_input("📍 From Area ID", min_value=6, max_value=1391, 
-                                              value=form_values['from_area_id'])
-                to_area_id = st.number_input("🎯 To Area ID", min_value=25, max_value=1390, 
+                to_area_id = st.number_input("To Area", min_value=25, max_value=1390, 
                                            value=form_values['to_area_id'])
             
-            # Geographic coordinates (optional)
-            with st.expander("🗺️ Geographic Coordinates (Optional)"):
+            # Optional coordinates - Collapsed by default
+            with st.expander("🗺️ Coordinates (Optional)"):
                 col_geo1, col_geo2 = st.columns(2)
                 with col_geo1:
-                    from_lat = st.number_input("📍 From Latitude", min_value=12.78, max_value=13.24, 
+                    from_lat = st.number_input("From Lat", min_value=12.78, max_value=13.24, 
                                              value=form_values['from_lat'], format="%.4f")
-                    from_long = st.number_input("📍 From Longitude", min_value=77.47, max_value=77.79, 
+                    from_long = st.number_input("From Long", min_value=77.47, max_value=77.79, 
                                               value=form_values['from_long'], format="%.4f")
                 
                 with col_geo2:
-                    to_lat = st.number_input("🎯 To Latitude", min_value=12.78, max_value=13.24, 
+                    to_lat = st.number_input("To Lat", min_value=12.78, max_value=13.24, 
                                            value=form_values['to_lat'], format="%.4f")
-                    to_long = st.number_input("🎯 To Longitude", min_value=77.47, max_value=77.79, 
+                    to_long = st.number_input("To Long", min_value=77.47, max_value=77.79, 
                                             value=form_values['to_long'], format="%.4f")
                 
-                from_city_id = st.number_input("🏙️ From City ID", min_value=1, max_value=15, 
+                from_city_id = st.number_input("City ID", min_value=1, max_value=15, 
                                               value=form_values['from_city_id'])
             
-            # Submit button
-            submitted = st.form_submit_button("🔮 Predict Cancellation Risk", type="primary")
-            
-        # Debug: Show form submission status
-        if submitted:
-            st.write("🔍 Form submitted successfully!")
+            # Prominent submit button
+            submitted = st.form_submit_button("🔮 Predict Risk", type="primary", use_container_width=True)
     
     with col2:
-        st.subheader("📊 Prediction Result")
+        st.subheader("📊 Results")
         
         if submitted:
             try:
-                # Prepare booking data
+                # Prepare data
                 booking_datetime = datetime.combine(booking_date, booking_time)
                 booking_data = {
                     'booking_created': booking_datetime,
@@ -518,22 +514,11 @@ elif app_mode == "🔮 Single Prediction":
                     'booking_channel': booking_channel
                 }
                 
-                # DEBUG: Show what data is being sent to model
-                with st.expander("🔍 Debug Info (Click to see prediction inputs)", expanded=False):
-                    st.write("**Input Data Being Sent to Model:**")
-                    st.json(booking_data, expanded=False)
-                    st.write(f"**Key Identifiers:**")
-                    st.write(f"- Vehicle Model ID: {vehicle_model_id}")
-                    st.write(f"- Travel Type ID: {travel_type_id}")
-                    st.write(f"- From Area ID: {from_area_id}")
-                    st.write(f"- To Area ID: {to_area_id}")
-                    st.write(f"- Booking Hour: {booking_datetime.hour}")
-                
                 # Make prediction
-                with st.spinner("Making prediction..."):
+                with st.spinner("Analyzing..."):
                     probability, risk_status, result = st.session_state.predictor.predict(booking_data)
                 
-                # Display prediction result with enhanced UI
+                # Clean result display
                 risk_class = result['risk_category'].lower()
                 if risk_class in ['critical', 'high']:
                     box_class = "danger-box"
@@ -542,145 +527,26 @@ elif app_mode == "🔮 Single Prediction":
                 else:
                     box_class = "success-box"
                 
-                # Main prediction display
+                # Main result
                 st.markdown(f"""
                 <div class="prediction-box {box_class}">
                     <h3>{risk_status} Risk</h3>
-                    <p>Cancellation Probability: {probability:.1%}</p>
+                    <p>{probability:.1%} Cancellation Probability</p>
                 </div>
                 """, unsafe_allow_html=True)
                 
-                # Detailed metrics in columns
-                st.markdown("### 📊 Detailed Analysis")
-                col1, col2, col3, col4 = st.columns(4)
-                
+                # Key metrics
+                col1, col2 = st.columns(2)
                 with col1:
-                    st.metric("🎯 Cancellation Risk", f"{probability:.1%}", 
+                    st.metric("🎯 Risk", f"{probability:.1%}", 
                              delta=f"{probability - 0.3:.1%} vs avg", delta_color="inverse")
-                
+                    st.metric("✅ Success", f"{1-probability:.1%}",
+                             delta=f"{(1-probability) - 0.7:.1%} vs avg")
                 with col2:
-                    success_prob = 1 - probability
-                    st.metric("✅ Success Probability", f"{success_prob:.1%}",
-                             delta=f"{success_prob - 0.7:.1%} vs avg")
+                    st.metric("📊 Category", result['risk_category'])
+                    st.metric("🔍 Confidence", result['confidence'])
                 
-                with col3:
-                    st.metric("🔍 Confidence Level", result['confidence'])
-                
-                with col4:
-                    st.metric("📊 Risk Category", result['risk_category'])
-                
-                # Enhanced recommendations based on risk level
-                st.markdown("### 💡 Actionable Recommendations")
-                if probability >= 0.5:
-                    st.error("""
-                    **🚨 CRITICAL RISK - Immediate Action Required:**
-                    - 📞 Contact customer immediately to confirm booking
-                    - 💰 Offer incentives, discounts, or flexible terms
-                    - 📅 Send multiple confirmation reminders
-                    - 🔄 Prepare alternative vehicles/routes
-                    - ⭐ Flag for priority customer service
-                    - 📊 Consider dynamic pricing adjustments
-                    """)
-                elif probability >= 0.3:
-                    st.warning("""
-                    **⚡ HIGH RISK - Monitor Closely:**
-                    - 📧 Send booking confirmation within 2 hours
-                    - 👀 Monitor for booking changes or cancellations
-                    - 🚗 Prepare backup vehicle options
-                    - ⏰ Send reminder 24 hours before trip
-                    - 💬 Enable proactive customer communication
-                    """)
-                elif probability >= 0.15:
-                    st.info("""
-                    **� MEDIUM RISK - Standard Plus Monitoring:**
-                    - ✅ Send standard confirmation
-                    - 📱 Track customer engagement
-                    - 🔔 Send gentle reminder 12 hours before
-                    - 📊 Monitor for any last-minute changes
-                    """)
-                else:
-                    st.success("""
-                    **✨ LOW RISK - Proceed with Confidence:**
-                    - ✅ Standard confirmation process
-                    - 🚗 Regular service delivery preparation
-                    - 😊 Customer very likely to show up
-                    - 📈 Low priority for intervention
-                    """)
-                
-                # Key Factors Analysis
-                st.markdown("### 🔍 Intelligent Risk Factor Analysis")
-                factors_col1, factors_col2 = st.columns(2)
-                
-                with factors_col1:
-                    st.markdown("**🚨 Risk Factors Detected:**")
-                    risk_factors = []
-                    
-                    # Time-based risk factors
-                    hour = booking_datetime.hour
-                    if hour >= 22 or hour <= 5:
-                        risk_factors.append("🌙 Late night/early morning booking (22:00-05:00)")
-                    elif hour >= 20:
-                        risk_factors.append("🌆 Evening booking (20:00-22:00)")
-                    
-                    # Location-based risk factors
-                    if from_area_id > 1000 or to_area_id > 1000:
-                        risk_factors.append("🗺️ Remote area pickup/dropoff")
-                    
-                    # Vehicle and travel type risk factors
-                    if vehicle_model_id >= 80:
-                        risk_factors.append("⭐ Premium vehicle (higher expectations)")
-                    if travel_type_id == 2:
-                        risk_factors.append("🏖️ Leisure travel (less committed)")
-                    elif travel_type_id == 3:
-                        risk_factors.append("❓ Unspecified travel purpose")
-                    
-                    # Booking pattern risk factors
-                    if not is_round_trip:
-                        risk_factors.append("➡️ One-way trip (lower commitment)")
-                    if booking_channel in ['phone', 'other']:
-                        risk_factors.append("📞 Non-digital booking channel")
-                    
-                    if risk_factors:
-                        for factor in risk_factors:
-                            st.write(f"• {factor}")
-                    else:
-                        st.write("• ✅ No major risk factors identified")
-                
-                with factors_col2:
-                    st.markdown("**✅ Positive Indicators:**")
-                    positive_factors = []
-                    
-                    # Time-based positive factors
-                    if 9 <= hour <= 17:
-                        positive_factors.append("🕘 Business hours booking (9:00-17:00)")
-                    elif 6 <= hour <= 9:
-                        positive_factors.append("🌅 Morning booking (6:00-9:00)")
-                    
-                    # Booking method positive factors
-                    if online_booking and mobile_site_booking:
-                        positive_factors.append("📱 Digital-savvy customer (online + mobile)")
-                    elif online_booking:
-                        positive_factors.append("💻 Online booking (higher reliability)")
-                    
-                    # Travel type positive factors
-                    if travel_type_id == 1:
-                        positive_factors.append("💼 Business travel (higher reliability)")
-                    
-                    # Trip characteristics
-                    if is_round_trip:
-                        positive_factors.append("🔄 Round trip (higher commitment)")
-                    
-                    # Location positive factors
-                    if 100 <= from_area_id <= 500 and 100 <= to_area_id <= 500:
-                        positive_factors.append("🏙️ Central city locations")
-                    
-                    if positive_factors:
-                        for factor in positive_factors:
-                            st.write(f"• {factor}")
-                    else:
-                        st.write("• 📊 Standard booking profile")
-                
-                # Enhanced Risk Gauge Visualization
+                # Risk Gauge Visualization
                 st.markdown("### 🎚️ Risk Assessment Gauge")
                 gauge_col1, gauge_col2, gauge_col3 = st.columns([1, 3, 1])
                 
@@ -709,8 +575,8 @@ elif app_mode == "🔮 Single Prediction":
                         progress_value = 0.9 + min((risk_percentage - 50) / 100, 0.1)  # Scale 50%+ to 90-100%
                         st.progress(progress_value, text="🔴 Critical Risk Zone")
                 
-                # Interactive Plotly Gauge (Alternative visualization)
-                with st.expander("📊 Interactive Gauge Chart", expanded=False):
+                # Interactive Plotly Gauge Chart
+                with st.expander("📊 Interactive Gauge Chart"):
                     fig = go.Figure(go.Indicator(
                         mode="gauge+number+delta",
                         value=probability * 100,
@@ -741,11 +607,76 @@ elif app_mode == "🔮 Single Prediction":
                     fig.update_layout(height=300, font={'color': "darkblue", 'family': "Arial"})
                     st.plotly_chart(fig, use_container_width=True)
                 
+                # Compact recommendations
+                st.markdown("### 💡 Actions")
+                if probability >= 0.5:
+                    st.error("🚨 **CRITICAL** - Contact customer immediately")
+                elif probability >= 0.3:
+                    st.warning("⚡ **HIGH** - Send confirmation & monitor")
+                elif probability >= 0.15:
+                    st.info("🟡 **MEDIUM** - Standard monitoring")
+                else:
+                    st.success("✅ **LOW** - Proceed normally")
+                
+                # Optional detailed analysis
+                with st.expander("🔍 Detailed Analysis"):
+                    # Risk factors
+                    st.write("**Risk Factors:**")
+                    risk_factors = []
+                    hour = booking_datetime.hour
+                    if hour >= 22 or hour <= 5:
+                        risk_factors.append("🌙 Late night booking")
+                    if from_area_id > 1000 or to_area_id > 1000:
+                        risk_factors.append("🗺️ Remote location")
+                    if vehicle_model_id >= 80:
+                        risk_factors.append("⭐ Premium vehicle")
+                    if travel_type_id == 2:
+                        risk_factors.append("🏖️ Leisure travel")
+                    if not is_round_trip:
+                        risk_factors.append("➡️ One-way trip")
+                    if booking_channel in ['phone', 'other']:
+                        risk_factors.append("📞 Non-digital booking")
+                    
+                    if risk_factors:
+                        for factor in risk_factors:
+                            st.write(f"• {factor}")
+                    else:
+                        st.write("• ✅ No major risk factors")
+                    
+                    # Positive factors
+                    st.markdown("---")
+                    st.write("**Positive Indicators:**")
+                    positive_factors = []
+                    
+                    if 9 <= hour <= 17:
+                        positive_factors.append("🕘 Business hours booking")
+                    elif 6 <= hour <= 9:
+                        positive_factors.append("🌅 Morning booking")
+                    
+                    if online_booking:
+                        positive_factors.append("💻 Online booking")
+                    
+                    if travel_type_id == 1:
+                        positive_factors.append("💼 Business travel")
+                    
+                    if is_round_trip:
+                        positive_factors.append("🔄 Round trip")
+                    
+                    if 100 <= from_area_id <= 500 and 100 <= to_area_id <= 500:
+                        positive_factors.append("🏙️ Central locations")
+                    
+                    if positive_factors:
+                        for factor in positive_factors:
+                            st.write(f"• {factor}")
+                    else:
+                        st.write("• 📊 Standard booking profile")
+                
             except Exception as e:
-                st.error(f"❌ Prediction failed: {str(e)}")
-                st.info("Please check your input data and try again.")
+                st.error(f"❌ Error: {str(e)}")
+        else:
+            st.info("👆 Fill the form and click Predict to see results")
 
-elif app_mode == "📊 Batch Analysis":
+elif app_mode == "📊 Batch":
     st.header("📊 Batch Booking Analysis")
     st.info("Upload a CSV file with booking data for batch prediction")
     
@@ -1052,103 +983,42 @@ elif app_mode == "ℹ️ About":
     </div>
     """, unsafe_allow_html=True)
 
-# Footer with comprehensive information and tools
+# Footer - Simplified
 st.markdown("---")
-st.markdown("## 🛠️ **Additional Tools & Information**")
-
-footer_col1, footer_col2, footer_col3 = st.columns(3)
-
-with footer_col1:
-    with st.expander("🔍 **Model Insights**", expanded=False):
+with st.expander("🛠️ Additional Tools & Information"):
+    col1, col2, col3 = st.columns(3)
+    
+    with col1:
         st.markdown("""
-        **🧠 How the AI Works:**
+        **🔍 Model Insights:**
         - Analyzes 20+ booking characteristics
-        - Uses ensemble of decision trees (XGBoost)
-        - Considers historical patterns and trends
+        - Uses XGBoost ensemble learning
         - Provides confidence-weighted predictions
-        
-        **📊 Key Prediction Factors:**
-        - Booking timing patterns
-        - Geographic location analysis  
-        - Customer behavior indicators
-        - Service type preferences
         """)
 
-with footer_col2:
-    with st.expander("🎯 **Best Practices**", expanded=False):
+    with col2:
         st.markdown("""
-        **📈 For Optimal Results:**
-        - Use realistic booking scenarios
-        - Test multiple risk levels
-        - Review factor analysis insights
-        - Implement recommended actions
-        
-        **⚡ Quick Tips:**
-        - Try sample scenarios first
-        - Use debug info for transparency
-        - Focus on relative risk differences
-        - Monitor prediction confidence
+        **🎯 Best Practices:**
+        - Test multiple risk scenarios
+        - Review factor analysis
+        - Focus on relative differences
         """)
 
-with footer_col3:
-    with st.expander("🚀 **Advanced Features**", expanded=False):
+    with col3:
         st.markdown("""
-        **🔬 Coming Soon:**
-        - Real-time model updates
-        - Custom risk thresholds
-        - Historical trend analysis
-        - Integration APIs
-        
-        **🎨 v2.0 Highlights:**
-        - Enhanced UI/UX design
-        - Smart state management
+        **⚡ Features:**
+        - Real-time predictions
+        - Batch processing
         - Interactive visualizations
-        - Comprehensive help system
         """)
 
-# Clear form button (enhanced)
-st.markdown("### 🔄 **Form Management**")
-form_mgmt_col1, form_mgmt_col2, form_mgmt_col3 = st.columns(3)
-
-with form_mgmt_col1:
-    if st.button("🆕 Reset to Defaults", help="Reset all inputs to default values", use_container_width=True):
-        keys_to_clear = ['current_form_values', 'sample_data', 'load_sample']
-        for key in keys_to_clear:
-            if key in st.session_state:
-                del st.session_state[key]
-        st.success("✅ Form reset to default values!")
-        st.rerun()
-
-with form_mgmt_col2:
-    if st.button("🎲 Load Random Sample", help="Generate random realistic data", use_container_width=True):
-        st.session_state.sample_data = get_sample_data("random")
-        st.session_state.load_sample = True
-        st.success("🎯 Random sample data loaded!")
-        st.rerun()
-
-with form_mgmt_col3:
-    if st.button("💾 Export Session Info", help="Get current session details", use_container_width=True):
-        session_info = {
-            "model_loaded": st.session_state.get('model_loaded', False),
-            "current_mode": app_mode if 'app_mode' in locals() else "Unknown",
-            "timestamp": datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-        }
-        st.json(session_info)
-
-# Enhanced footer
+# Compact footer
 st.markdown("""
----
-<div style='text-align: center; padding: 30px; background: linear-gradient(135deg, #f8f9fa, #e9ecef); border-radius: 10px; margin-top: 20px;'>
-    <h3 style='color: #1f77b4; margin-bottom: 15px;'>🚗 YourCabs v2.0 - Advanced Prediction System</h3>
-    <p style='color: #666; margin-bottom: 10px;'>
-        Built with ❤️ using Streamlit, XGBoost, and Modern Web Technologies
-    </p>
-    <p style='color: #888; font-size: 0.9em;'>
-        <strong>Version:</strong> 2.0 | <strong>Last Updated:</strong> July 2025 | 
-        <a href='https://github.com/N8Shik/YourCabs-v2' target='_blank' style='color: #1f77b4;'>🌟 Star on GitHub</a>
-    </p>
-    <p style='color: #999; font-size: 0.8em; margin-top: 15px;'>
-        🎯 Accurate Predictions • 🎨 Beautiful Design • ⚡ Lightning Fast • 🔍 Complete Transparency
-    </p>
+<div class="footer-section">
+    <div style='text-align: center;'>
+        <h4 style='color: #1f77b4; margin-bottom: 10px;'>🚗 YourCabs v2.0</h4>
+        <p style='color: #666; margin: 5px 0;'>Advanced ML-powered cancellation prediction</p>
+        <p style='color: #888; font-size: 0.9em;'>Built with Streamlit & XGBoost</p>
+    </div>
 </div>
 """, unsafe_allow_html=True)
