@@ -1204,7 +1204,7 @@ elif app_mode == "ℹ️ About":
     
     with col1:
         st.markdown("""
-        ## � **YourCabs v2.0 - Advanced Cancellation Prediction**
+        ## 🚕 **YourCabs v2.0 - Advanced Cancellation Prediction**
         
         This application uses cutting-edge machine learning to predict booking cancellation risk in real-time, 
         helping cab companies optimize operations and improve customer retention.
